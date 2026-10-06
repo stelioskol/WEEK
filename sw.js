@@ -2,7 +2,7 @@ const CACHE_NAME = 'week-app-v3';
 const urlsToCache = [
   './',
   './index.html',
-  './icon.jpg',
+  './icon.png',
   './manifest.json'
 ];
 
