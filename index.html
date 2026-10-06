@@ -128,8 +128,10 @@ const save=()=>{try{localStorage.setItem('week-cards-v2',JSON.stringify(S))}catc
 const main=document.getElementById('main');
 let V='w',cur=new Date(now),pop=null;
 const li=x=>`<li class="${x.d?'done':''}${x.id===pop?' pop':''}" data-id="${x.id}"><button class="chk" data-a="tg" aria-label="Έγινε"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="em">${x.e}</span><span class="tx">${esc(x.t)}</span><button class="ic" data-a="mv" aria-label="Αύριο">➜</button><button class="ic" data-a="rm" aria-label="Διαγραφή">✕</button></li>`;
+//function card(d,sm){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,p=a.length?Math.round(dn/a.length*100):0,w=WD[wd(d)];
+  //return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
 function card(d,sm){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,p=a.length?Math.round(dn/a.length*100):0,w=WD[wd(d)];
-  return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
+  return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="rep" aria-label="Επανάληψη" style="background:var(--line);color:var(--mute);font-size:17px;width:38px;box-shadow:none;">🔁</button><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
 function month(){const f=new Date(cur.getFullYear(),cur.getMonth(),1),s=mon(f);let h='<div class="mg">'+WD.map(w=>`<b>${w.s}</b>`).join('');
   for(let i=0;i<42;i++){const d=addD(s,i);if(i>=35&&i%7==0&&d.getMonth()!=cur.getMonth())break;const k=K(d),a=S.t[k]||[];
     h+=`<button class="cell${d.getMonth()!=cur.getMonth()?' off':''}${k==K(now)?' now':''}" data-a="open" data-k="${k}" style="--h:${WD[wd(d)].h}"><i>${d.getDate()}</i><span>${a.slice(0,4).map(x=>`<em class="${x.d?'x':''}">${x.e}</em>`).join('')}</span>${a.length>4?'<u>+'+(a.length-4)+'</u>':''}</button>`}
@@ -164,15 +166,26 @@ function setV(v,an){V=v;render('cur',an||null)}
 function nav(n){if(V=='d')cur=addD(cur,n);else if(V=='w')cur=addD(cur,7*n);else{const d=new Date(cur.getFullYear(),cur.getMonth()+n,1);cur=d.getMonth()==now.getMonth()&&d.getFullYear()==now.getFullYear()?new Date(now):d}render(0)}
 function zoom(dir){const o=['m','w','d'],i=o.indexOf(V)+dir;if(i<0||i>2)return;setV(o[i],dir>0?'zi':'zo')}
 function burst(x,y,n){for(let k=0;k<n;k++){const s=document.createElement('span'),a=Math.random()*6.28,r=50+Math.random()*(n>8?170:80);s.className='cf';s.textContent=CF[Math.random()*CF.length|0];s.style.cssText=`left:${x}px;top:${y}px;--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r-40}px;--rt:${(Math.random()-.5)*540}deg`;document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
-function add(k){const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
-  const[e,t]=emo(v);(S.t[k]=S.t[k]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
-  save();render();const i=main.querySelector(`[data-k="${k}"] input`);if(i)i.focus()}
+//function add(k){const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
+//  const[e,t]=emo(v);(S.t[k]=S.t[k]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
+  //save();render();const i=main.querySelector(`[data-k="${k}"] input`);if(i)i.focus()}
+function add(k, rep){
+  const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
+  const [e,t]=emo(v);
+  const weeks = rep ? 24 : 1;
+  for(let i=0; i<weeks; i++){
+    const tk = K(addD(parse(k), i*7));
+    (S.t[tk]=S.t[tk]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
+  }
+  save();render();const i_inp=main.querySelector(`[data-k="${k}"] input`);if(i_inp)i_inp.focus()}
 main.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
   if(a=='open'){cur=parse(b.dataset.k);return setV('w','zi')}
   const c=b.closest('.card'),k=c.dataset.k;
   if(a=='zoom'){if(V=='w'){cur=parse(k);setV('d','zi')}return}
-  if(a=='add')return add(k);
+ // if(a=='add')return add(k);
+  if(a=='add')return add(k, false);
+  if(a=='rep')return add(k, true);
   const arr=S.t[k]=S.t[k]||[];
   if(a=='clr')S.t[k]=arr.filter(x=>!x.d);
   else{const id=b.closest('li').dataset.id,i=arr.findIndex(x=>x.id==id);
