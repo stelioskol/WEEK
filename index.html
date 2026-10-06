@@ -173,9 +173,10 @@ function add(k, rep){
   const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
   const [e,t]=emo(v);
   const weeks = rep ? 24 : 1;
+  const sharedId = Date.now().toString(36)+Math.random().toString(36).slice(2,5);
   for(let i=0; i<weeks; i++){
     const tk = K(addD(parse(k), i*7));
-    (S.t[tk]=S.t[tk]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
+    (S.t[tk]=S.t[tk]||[]).push({id:sharedId,t,e,d:false});
   }
   save();render();const i_inp=main.querySelector(`[data-k="${k}"] input`);if(i_inp)i_inp.focus()}
 main.addEventListener('click',e=>{
@@ -190,7 +191,15 @@ main.addEventListener('click',e=>{
   if(a=='clr')S.t[k]=arr.filter(x=>!x.d);
   else{const id=b.closest('li').dataset.id,i=arr.findIndex(x=>x.id==id);
     if(a=='tg'){arr[i].d=!arr[i].d;if(arr[i].d){pop=id;const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,6);if(arr.every(x=>x.d))setTimeout(()=>burst(innerWidth/2,innerHeight/3,26),150)}}
-    if(a=='rm')arr.splice(i,1);
+    //if(a=='rm')arr.splice(i,1);
+    if(a=='rm'){
+      let c=0; for(let d in S.t) c+=S.t[d].filter(x=>x.id==id).length;
+      if(c>1 && confirm("🔁 Αυτή είναι επαναλαμβανόμενη εργασία!\n\n[OK] Διαγραφή από ΟΛΕΣ τις εβδομάδες\n[ΑΚΥΡΩΣΗ] Διαγραφή ΜΟΝΟ από σήμερα")){
+        for(let d in S.t) S.t[d]=S.t[d].filter(x=>x.id!=id);
+      } else {
+        arr.splice(i,1);
+      }
+    }
     if(a=='mv'){const[x]=arr.splice(i,1);x.d=false;const n=K(addD(parse(k),1));(S.t[n]=S.t[n]||[]).push(x)}}
   save();render()});
 main.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.matches('input'))add(e.target.closest('.card').dataset.k)});
