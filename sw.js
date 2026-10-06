@@ -1,4 +1,4 @@
-const CACHE_NAME = 'week-app-v3';
+const CACHE_NAME = 'week-app-v4';
 const urlsToCache = [
   './',
   './index.html',
