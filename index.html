@@ -1,215 +1,202 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Εβδομάδα</title>
-    
-    <link rel="icon" href="icon.jpg?v=3">
-    <link rel="apple-touch-icon" href="icon.jpg?v=3">
-    <link rel="manifest" href="manifest.json">
-    
-    <style>
-        /* Η ΑΡΧΙΚΗ ΣΟΥ ΚΑΘΑΡΗ ΕΜΦΑΝΙΣΗ (Χωρίς χρωματιστά πλαίσια) */
-        body { font-family: sans-serif; background-color: #f6f1ff; margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; }
-        h1 { text-align: center; color: #333; margin-top: 5px; font-size: 1.5em; }
-        
-        .week-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 20px; flex-grow: 1; align-items: stretch; }
-        .day-card { background: white; border-radius: 15px; padding: 15px; min-width: 85vw; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
-        @media (min-width: 768px) { .day-card { min-width: 320px; } }
-        
-        .day-title { font-weight: bold; font-size: 1.2em; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 10px; text-align: center; color: #444; }
-        .tasks-list { flex-grow: 1; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
-        
-        .task-item { display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 10px 0; word-break: break-word; }
-        .task-item.done span.task-text-content { text-decoration: line-through; color: #888; }
-        
-        .task-text { flex-grow: 1; margin-left: 10px; font-size: 1em; }
-        
-        .btn-check, .btn-delete { background: none; border: none; font-size: 1.3em; cursor: pointer; padding: 5px; }
-        
-        /* Απλό πεδίο προσθήκης με τα δύο κουμπιά */
-        .input-area { display: flex; gap: 5px; margin-top: 15px; }
-        .input-area input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; }
-        .input-area button { background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0 10px; font-size: 1.2em; cursor: pointer; background-color: #f9f9f9; }
-        
-        .nav-buttons { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .nav-buttons button { background: #fff; border: 1px solid #ccc; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
-    </style>
+<link rel="icon" href="icon.jpg?v=3">
+<link rel="apple-touch-icon" href="icon.jpg?v=3">
+<link rel="manifest" href="manifest.json">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Εβδομάδα</title>
+<style>
+:root{--bg:#f6f1ff;--ink:#261c3d;--mute:#7d7399;--card:#fff;--line:#ece5f8;--shadow:0 10px 28px rgba(90,55,150,.16);--g1:hsl(285 95% 86% / .55);--g2:hsl(190 90% 82% / .45);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#150f22;--ink:#f5f0ff;--mute:#ab9fc9;--card:#231a36;--line:#34294b;--shadow:0 10px 28px rgba(0,0,0,.55);--g1:hsl(285 80% 40% / .35);--g2:hsl(200 80% 35% / .3)}}
+:root[data-theme="dark"]{--bg:#150f22;--ink:#f5f0ff;--mute:#ab9fc9;--card:#231a36;--line:#34294b;--shadow:0 10px 28px rgba(0,0,0,.55);--g1:hsl(285 80% 40% / .35);--g2:hsl(200 80% 35% / .3)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;height:100%;display:flex;flex-direction:column;overflow:hidden;color:var(--ink);background:radial-gradient(circle at 5% -10%,var(--g1),transparent 45%),radial-gradient(circle at 105% 0,var(--g2),transparent 40%),var(--bg);font-family:ui-rounded,"SF Pro Rounded",-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button{font-family:inherit;cursor:pointer}
+header{padding:12px 16px 8px}
+.r1{display:flex;align-items:center;gap:8px}
+.tt{flex:1;text-align:center}
+h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.4px}
+#st{margin:1px 0 0;color:var(--mute);font-size:13px;font-weight:600}
+.nv{flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--card);color:var(--ink);font-size:26px;line-height:1;padding:0 0 3px;box-shadow:var(--shadow)}
+.wbar{height:7px;border-radius:9px;background:var(--line);overflow:hidden;margin:10px 0}
+.wbar u{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#8b5cf6,#ec4899,#f59e0b);transition:width .6s cubic-bezier(.3,1.4,.5,1)}
+.r2{display:flex;gap:8px}
+.seg{flex:1;display:flex;background:var(--line);border-radius:16px;padding:3px}
+.seg button{flex:1;border:0;background:none;color:var(--mute);font-size:14px;font-weight:700;padding:8px 0;border-radius:13px;transition:.2s}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(80,50,140,.15)}
+#td{border:0;border-radius:16px;padding:0 14px;font-size:14px;font-weight:800;color:#fff;background:linear-gradient(140deg,#8b5cf6,#ec4899)}
+
+/* --- ΡΥΘΜΙΣΕΙΣ ΓΙΑ SCROLL & ΠΡΟΒΟΛΕΣ (ΚΑΡΟΥΖΕΛ) --- */
+#main{flex:1;min-height:0;overflow-y:auto;padding:6px 14px calc(24px + 0px);touch-action:pan-y;-webkit-overflow-scrolling:touch;position:relative}
+#main::-webkit-scrollbar { display: none; }
+#main { scrollbar-width: none; }
+
+#main.d{display:flex;flex-direction:column}
+.d .card{flex:1;margin:0;min-height:0}
+
+/* Οριζόντιο Scroll (Καρουζέλ) για την Εβδομάδα */
+#main.w{display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;gap:12px;padding:10px 14px 24px;touch-action:pan-x pan-y}
+.w .card{flex:0 0 88vw;scroll-snap-align:center;margin:0;max-height:100%;overflow-y:auto;box-shadow:0 10px 24px rgba(0,0,0,0.2)}
+/* ------------------------------------------------ */
+
+.zi{animation:zi .3s cubic-bezier(.3,1.2,.5,1)}
+.zo{animation:zo .3s cubic-bezier(.3,1.2,.5,1)}
+@keyframes zi{from{transform:scale(.9);opacity:0}}
+@keyframes zo{from{transform:scale(1.1);opacity:0}}
+.card{display:flex;flex-direction:column;background:var(--card);border-radius:26px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+.card.today{outline:3px solid hsl(var(--h) 80% 65% / .55)}
+.hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 18px 12px;color:#fff;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
+.hr{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
+h2{margin:0;font-size:25px;font-weight:800;letter-spacing:-.4px}
+small{font-size:13px;font-weight:600;opacity:.92}
+small b{background:rgba(255,255,255,.28);padding:2px 9px;border-radius:20px;font-size:11px;margin-left:4px}
+.big{font-size:42px;line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.2))}
+.d .big{animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px) rotate(-7deg)}}
+.bar{flex:0 0 100%;height:7px;background:rgba(255,255,255,.3);border-radius:8px;margin-top:11px;overflow:hidden}
+.bar u{display:block;height:100%;background:#fff;border-radius:8px;transition:width .6s cubic-bezier(.3,1.4,.5,1)}
+.clr{border:0;background:rgba(255,255,255,.25);border-radius:12px;padding:4px 8px;font-size:13px}
+.sm .hd{padding:10px 16px 9px}
+.sm h2{font-size:18px}
+.sm .big{font-size:26px}
+.sm .bar{height:5px;margin-top:8px}
+.list{list-style:none;margin:0;padding:6px 12px;flex:1;min-height:0;overflow-y:auto}
+li{display:flex;align-items:center;gap:10px;padding:10px 3px;border-bottom:1px dashed var(--line)}
+li.empty{display:block;border:0;text-align:center;color:var(--mute);padding:36px 10px;font-weight:600;line-height:1.6}
+.sm .list:empty{display:none}
+.chk{flex:none;width:29px;height:29px;border-radius:50%;border:2.5px solid hsl(var(--h) 60% 72%);background:transparent;display:grid;place-items:center;padding:0;transition:.2s}
+.chk svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.9,.5,1)}
+.done .chk{background:hsl(var(--h) 80% 55%);border-color:transparent}
+.done .chk svg{transform:scale(1)}
+.pop .chk{animation:pop .4s}
+@keyframes pop{40%{transform:scale(1.4)}}
+.em{font-size:21px}
+.tx{flex:1;font-size:16px;font-weight:600;line-height:1.3;word-break:break-word}
+.done .tx{text-decoration:line-through;opacity:.45}
+.done .em{filter:grayscale(1);opacity:.5}
+.ic{flex:none;border:0;background:none;color:var(--mute);width:30px;height:30px;border-radius:50%;font-size:15px;padding:0;opacity:.75}
+.add{display:flex;gap:8px;padding:8px 12px 12px}
+.add input{flex:1;min-width:0;font-size:16px;font-weight:600;font-family:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:10px 13px;outline:0;-webkit-user-select:text;user-select:text}
+.add input:focus{border-color:hsl(var(--h) 80% 60%)}
+.plus{flex:none;width:46px;border:0;border-radius:16px;color:#fff;font-size:26px;font-weight:700;line-height:1;padding:0;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
+.plus:active{transform:scale(.9)}
+.mg{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.mg b{text-align:center;font-size:12px;color:var(--mute);padding:4px 0}
+.cell{border:0;border-radius:14px;background:var(--card);color:var(--ink);min-height:74px;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 2px 8px rgba(80,50,140,.1)}
+.cell i{font-style:normal;font-size:13px;font-weight:800}
+.cell.off{opacity:.4}
+.cell.now{color:#fff;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
+.cell span{display:flex;flex-wrap:wrap;justify-content:center;font-size:13px;line-height:1.2}
+.cell em{font-style:normal}
+.cell em.x{opacity:.35;filter:grayscale(1)}
+.cell u{text-decoration:none;font-size:10px;font-weight:800;opacity:.7}
+.cf{position:fixed;pointer-events:none;z-index:9;font-size:20px;animation:fly .95s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rt));opacity:0}}
+@media (prefers-reduced-motion:reduce){.big,.cf,.zi,.zo{animation:none}}
+</style>
 </head>
 <body>
-    <div class="nav-buttons">
-        <button onclick="changeWeek(-1)">&#8592; Πριν</button>
-        <button onclick="goToToday()">Σήμερα</button>
-        <button onclick="changeWeek(1)">Μετά &#8594;</button>
-    </div>
-    <h1 id="week-title">Εβδομάδα</h1>
-    
-    <div class="week-container" id="week-container">
-        <!-- Κάρτες ημερών -->
-    </div>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Error:', err));
-        }
-
-        const dayNames = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"];
-        let currentOffset = 0; 
-        
-        let tasks = JSON.parse(localStorage.getItem('week_tasks')) || {};
-        let recurring = JSON.parse(localStorage.getItem('week_recurring')) || { "Δευτέρα": [], "Τρίτη": [], "Τετάρτη": [], "Πέμπτη": [], "Παρασκευή": [], "Σάββατο": [], "Κυριακή": [] };
-        let recurringDone = JSON.parse(localStorage.getItem('week_recurring_done')) || {};
-
-        function saveData() {
-            localStorage.setItem('week_tasks', JSON.stringify(tasks));
-            localStorage.setItem('week_recurring', JSON.stringify(recurring));
-            localStorage.setItem('week_recurring_done', JSON.stringify(recurringDone));
-        }
-
-        function getMonday(d) {
-            d = new Date(d);
-            let day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6 : 1);
-            return new Date(d.setDate(diff));
-        }
-
-        function formatDate(date) { return date.toISOString().split('T')[0]; }
-        function formatDateGreek(date) { return date.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' }); }
-
-        function renderWeek() {
-            const container = document.getElementById('week-container');
-            container.innerHTML = '';
-            
-            let today = new Date();
-            let monday = getMonday(today);
-            monday.setDate(monday.getDate() + (currentOffset * 7));
-
-            let sunday = new Date(monday);
-            sunday.setDate(sunday.getDate() + 6);
-            document.getElementById('week-title').innerText = `${formatDateGreek(monday)} - ${formatDateGreek(sunday)}`;
-
-            for (let i = 0; i < 7; i++) {
-                let dateObj = new Date(monday);
-                dateObj.setDate(monday.getDate() + i);
-                let dateStr = formatDate(dateObj);
-                let dayName = dayNames[i];
-
-                let card = document.createElement('div');
-                card.className = 'day-card';
-
-                let html = `<div class="day-title">${dayName} <span style="font-size:0.8em; color:#888;">${formatDateGreek(dateObj)}</span></div>`;
-                html += `<ul class="tasks-list" id="list-${dateStr}">`;
-
-                // Επαναλαμβανόμενες εργασίες (με την ίδια ακριβώς απλή εμφάνιση)
-                if(recurring[dayName]) {
-                    recurring[dayName].forEach((taskText, index) => {
-                        let isDone = recurringDone[dateStr] && recurringDone[dateStr].includes(taskText);
-                        html += `
-                        <li class="task-item ${isDone ? 'done' : ''}">
-                            <button class="btn-check" onclick="toggleRecurring('${dateStr}', '${dayName}', ${index})">${isDone ? '✓' : '○'}</button>
-                            <span class="task-text"><span class="task-text-content"><b>(Κάθε ${dayName})</b> ${taskText}</span></span>
-                            <button class="btn-delete" onclick="deleteRecurring('${dayName}', ${index})">×</button>
-                        </li>`;
-                    });
-                }
-
-                // Απλές εργασίες
-                if (tasks[dateStr]) {
-                    tasks[dateStr].forEach((task, index) => {
-                        html += `
-                        <li class="task-item ${task.done ? 'done' : ''}">
-                            <button class="btn-check" onclick="toggleTask('${dateStr}', ${index})">${task.done ? '✓' : '○'}</button>
-                            <span class="task-text"><span class="task-text-content">${task.text}</span></span>
-                            <button class="btn-delete" onclick="deleteTask('${dateStr}', ${index})">×</button>
-                        </li>`;
-                    });
-                }
-
-                html += `</ul>`;
-                html += `
-                <div class="input-area">
-                    <input type="text" id="input-${dateStr}" placeholder="Γράψε εδώ..." onkeypress="if(event.key==='Enter') addTask('${dateStr}')">
-                    <button onclick="addTask('${dateStr}')" title="Προσθήκη μόνο για σήμερα">+</button>
-                    <button onclick="addRecurringTask('${dateStr}', '${dayName}')" title="Επανάληψη κάθε βδομάδα">🔁</button>
-                </div>`;
-
-                card.innerHTML = html;
-                container.appendChild(card);
-            }
-        }
-
-        function addTask(dateStr) {
-            let input = document.getElementById(`input-${dateStr}`);
-            if (!input.value.trim()) return;
-            if (!tasks[dateStr]) tasks[dateStr] = [];
-            tasks[dateStr].push({ text: input.value.trim(), done: false });
-            input.value = '';
-            saveData();
-            renderWeek();
-        }
-
-        function toggleTask(dateStr, index) {
-            tasks[dateStr][index].done = !tasks[dateStr][index].done;
-            saveData();
-            renderWeek();
-        }
-
-        function deleteTask(dateStr, index) {
-            tasks[dateStr].splice(index, 1);
-            saveData();
-            renderWeek();
-        }
-
-        function addRecurringTask(dateStr, dayName) {
-            let input = document.getElementById(`input-${dateStr}`);
-            let val = input.value.trim();
-            if (!val) return;
-            if(confirm(`Να προστεθεί το "${val}" σε ΚΑΘΕ ${dayName};`)) {
-                if (!recurring[dayName]) recurring[dayName] = [];
-                recurring[dayName].push(val);
-                input.value = '';
-                saveData();
-                renderWeek();
-            }
-        }
-
-        function toggleRecurring(dateStr, dayName, index) {
-            let taskText = recurring[dayName][index];
-            if (!recurringDone[dateStr]) recurringDone[dateStr] = [];
-            let idx = recurringDone[dateStr].indexOf(taskText);
-            if (idx > -1) { recurringDone[dateStr].splice(idx, 1); } 
-            else { recurringDone[dateStr].push(taskText); }
-            saveData();
-            renderWeek();
-        }
-
-        function deleteRecurring(dayName, index) {
-            if(confirm(`Διαγραφή από ΟΛΕΣ τις ${dayName}s;`)) {
-                recurring[dayName].splice(index, 1);
-                saveData();
-                renderWeek();
-            }
-        }
-
-        function changeWeek(direction) {
-            currentOffset += direction;
-            renderWeek();
-            document.getElementById('week-container').scrollLeft = 0;
-        }
-
-        function goToToday() {
-            currentOffset = 0;
-            renderWeek();
-            setTimeout(() => {
-                let todayStr = formatDate(new Date());
-                let input = document.getElementById(`input-${todayStr}`);
-                if(input) input.scrollIntoView({behavior: "smooth", block: "nearest", inline: "center"});
-            }, 100);
-        }
-
-        renderWeek();
-        window.onload = () => { setTimeout(() => goToToday(), 200); };
-    </script>
+<header>
+<div class="r1"><button class="nv" id="pv" aria-label="Πίσω">‹</button><div class="tt"><h1 id="tt"></h1><p id="st"></p></div><button class="nv" id="nx" aria-label="Μπροστά">›</button></div>
+<div class="wbar"><u id="wf"></u></div>
+<div class="r2"><div class="seg"><button data-v="d">Μέρα</button><button data-v="w">Εβδομάδα</button><button data-v="m">Μήνας</button></div><button id="td">Σήμερα</button></div>
+</header>
+<main id="main"></main>
+<script>
+const WD=[{n:'Δευτέρα',s:'Δ',h:262,e:'🚀'},{n:'Τρίτη',s:'Τ',h:330,e:'🎯'},{n:'Τετάρτη',s:'Τ',h:200,e:'🌊'},{n:'Πέμπτη',s:'Π',h:150,e:'🌿'},{n:'Παρασκευή',s:'Π',h:22,e:'🎉'},{n:'Σάββατο',s:'Σ',h:290,e:'🛼'},{n:'Κυριακή',s:'Κ',h:42,e:'☀️'}];
+const MN=['Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος','Μάιος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'];
+const MS=['Ιαν','Φεβ','Μαρ','Απρ','Μαΐ','Ιουν','Ιουλ','Αυγ','Σεπ','Οκτ','Νοε','Δεκ'];
+const CF=['✨','🎉','⭐','💜','🔥','🌊','🎈'],POOL=['⭐','🔥','🌊','🎈','🍀','🚀','💡','🎯','🧩','🌿'];
+const MAP=[['γυμν|gym|τρεξ|workout','💪'],['καφ','☕'],['ψων|σουπερ|market','🛒'],['δουλει|meeting|σχολει|μαθημ|διαβασ','💼'],['φαγ|μαγειρ|δειπν|μεσημερ','🍝'],['φιλ|βολτ|εξοδ|ποτο','🥂'],['ραντεβ|γιατρ|οδοντ','🩺'],['πληρωμ|λογαρ|τραπεζ','💸'],['καθαρ|σπιτι|πλυντ','🧺'],['ταξιδ|πτηση|αεροπ','✈️'],['τηλεφων|καλεσ|καλω','📞'],['μουσικ|συναυλ','🎧'],['ταινι|σειρα|netflix','🍿'],['γενεθλ|δωρο','🎁'],['αγορ|παραγγ','📦']];
+const PH=['π.χ. Γυμναστήριο 💪','π.χ. Καφές με φίλους ☕','π.χ. Να πάρω δώρο 🎁','π.χ. Super market 🛒','π.χ. Ραντεβού ✨','π.χ. Βόλτα στη θάλασσα 🌊','π.χ. Ταινία + ποπ κορν 🍿'];
+const pad=n=>String(n).padStart(2,'0'),K=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse=k=>{const[y,m,d]=k.split('-');return new Date(+y,m-1,+d)};
+const wd=d=>(d.getDay()+6)%7,addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x},mon=d=>addD(d,-wd(d));
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ς/g,'σ');
+function emo(t){const m=t.match(/^\p{Extended_Pictographic}\uFE0F?/u);if(m)return[m[0],t.slice(m[0].length).trim()||t];const n=norm(t);for(const[k,e]of MAP)if(new RegExp(k).test(n))return[e,t];return[POOL[Math.random()*POOL.length|0],t]}
+const now=new Date();now.setHours(0,0,0,0);
+let S={t:{}};try{S=JSON.parse(localStorage.getItem('week-cards-v2'))||S}catch(e){}
+S.t=S.t||{};
+try{const o=JSON.parse(localStorage.getItem('week-cards-v1'));if(o&&o.t&&!Object.keys(S.t).length){const m=mon(now);for(let i=0;i<7;i++)if(o.t[i]&&o.t[i].length)S.t[K(addD(m,i))]=o.t[i]}}catch(e){}
+if(!S.seeded&&!Object.keys(S.t).length){S.seeded=1;S.t[K(now)]=[{id:'hi',t:'Τσίμπα με 2 δάχτυλα για ζουμ: μέρα ⇄ εβδομάδα ⇄ μήνας',e:'🔍',d:false}]}
+const save=()=>{try{localStorage.setItem('week-cards-v2',JSON.stringify(S))}catch(e){}};
+const main=document.getElementById('main');
+let V='w',cur=new Date(now),pop=null;
+const li=x=>`<li class="${x.d?'done':''}${x.id===pop?' pop':''}" data-id="${x.id}"><button class="chk" data-a="tg" aria-label="Έγινε"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="em">${x.e}</span><span class="tx">${esc(x.t)}</span><button class="ic" data-a="mv" aria-label="Αύριο">➜</button><button class="ic" data-a="rm" aria-label="Διαγραφή">✕</button></li>`;
+function card(d,sm){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,p=a.length?Math.round(dn/a.length*100):0,w=WD[wd(d)];
+  return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
+function month(){const f=new Date(cur.getFullYear(),cur.getMonth(),1),s=mon(f);let h='<div class="mg">'+WD.map(w=>`<b>${w.s}</b>`).join('');
+  for(let i=0;i<42;i++){const d=addD(s,i);if(i>=35&&i%7==0&&d.getMonth()!=cur.getMonth())break;const k=K(d),a=S.t[k]||[];
+    h+=`<button class="cell${d.getMonth()!=cur.getMonth()?' off':''}${k==K(now)?' now':''}" data-a="open" data-k="${k}" style="--h:${WD[wd(d)].h}"><i>${d.getDate()}</i><span>${a.slice(0,4).map(x=>`<em class="${x.d?'x':''}">${x.e}</em>`).join('')}</span>${a.length>4?'<u>+'+(a.length-4)+'</u>':''}</button>`}
+  return h+'</div>'}
+function keys(){if(V=='d')return[K(cur)];if(V=='w'){const m=mon(cur);return[...Array(7)].map((_,i)=>K(addD(m,i)))}const n=new Date(cur.getFullYear(),cur.getMonth()+1,0).getDate();return[...Array(n)].map((_,i)=>K(new Date(cur.getFullYear(),cur.getMonth(),i+1)))}
+function render(sc,an){
+  const st = V=='w' ? main.scrollLeft : main.scrollTop;
+  let h;
+  if(V=='d')h=card(cur,false);else if(V=='w'){const m=mon(cur);h=[...Array(7)].map((_,i)=>card(addD(m,i),true)).join('')}else h=month();
+  main.className=V+(an?' '+an:'');main.innerHTML=h;
+  let tt,sub;
+  if(V=='d'){tt=WD[wd(cur)].n;sub=`${cur.getDate()} ${MN[cur.getMonth()]} ${cur.getFullYear()}`}
+  else if(V=='w'){const m=mon(cur),e=addD(m,6);tt=`${m.getDate()} ${MS[m.getMonth()]} – ${e.getDate()} ${MS[e.getMonth()]}`;sub=e.getFullYear()}
+  else{tt=MN[cur.getMonth()];sub=cur.getFullYear()}
+  let t=0,n=0;keys().forEach(k=>{const a=S.t[k]||[];t+=a.length;n+=a.filter(x=>x.d).length});
+  document.getElementById('tt').textContent=tt;document.getElementById('st').textContent=sub+(t?` · ${n}/${t} έτοιμα`:'');
+  document.getElementById('wf').style.width=(t?n/t*100:0)+'%';
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v==V));
+  pop=null;
+  if(sc=='cur'){
+      const c=main.querySelector(`.card[data-k="${K(cur)}"]`);
+      if(c){
+          if(V=='w') setTimeout(()=> main.scrollLeft = c.offsetLeft - 14, 10);
+          else main.scrollTop = c.offsetTop - 6;
+      }
+  } else {
+      if(V=='w') main.scrollLeft = sc===0?0:st;
+      else main.scrollTop = sc===0?0:st;
+  }
+}
+function setV(v,an){V=v;render('cur',an||null)}
+function nav(n){if(V=='d')cur=addD(cur,n);else if(V=='w')cur=addD(cur,7*n);else{const d=new Date(cur.getFullYear(),cur.getMonth()+n,1);cur=d.getMonth()==now.getMonth()&&d.getFullYear()==now.getFullYear()?new Date(now):d}render(0)}
+function zoom(dir){const o=['m','w','d'],i=o.indexOf(V)+dir;if(i<0||i>2)return;setV(o[i],dir>0?'zi':'zo')}
+function burst(x,y,n){for(let k=0;k<n;k++){const s=document.createElement('span'),a=Math.random()*6.28,r=50+Math.random()*(n>8?170:80);s.className='cf';s.textContent=CF[Math.random()*CF.length|0];s.style.cssText=`left:${x}px;top:${y}px;--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r-40}px;--rt:${(Math.random()-.5)*540}deg`;document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+function add(k){const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
+  const[e,t]=emo(v);(S.t[k]=S.t[k]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
+  save();render();const i=main.querySelector(`[data-k="${k}"] input`);if(i)i.focus()}
+main.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+  if(a=='open'){cur=parse(b.dataset.k);return setV('w','zi')}
+  const c=b.closest('.card'),k=c.dataset.k;
+  if(a=='zoom'){if(V=='w'){cur=parse(k);setV('d','zi')}return}
+  if(a=='add')return add(k);
+  const arr=S.t[k]=S.t[k]||[];
+  if(a=='clr')S.t[k]=arr.filter(x=>!x.d);
+  else{const id=b.closest('li').dataset.id,i=arr.findIndex(x=>x.id==id);
+    if(a=='tg'){arr[i].d=!arr[i].d;if(arr[i].d){pop=id;const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,6);if(arr.every(x=>x.d))setTimeout(()=>burst(innerWidth/2,innerHeight/3,26),150)}}
+    if(a=='rm')arr.splice(i,1);
+    if(a=='mv'){const[x]=arr.splice(i,1);x.d=false;const n=K(addD(parse(k),1));(S.t[n]=S.t[n]||[]).push(x)}}
+  save();render()});
+main.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.matches('input'))add(e.target.closest('.card').dataset.k)});
+document.getElementById('pv').onclick=()=>nav(-1);
+document.getElementById('nx').onclick=()=>nav(1);
+document.getElementById('td').onclick=()=>{cur=new Date(now);setV(V)};
+document.querySelector('.seg').onclick=e=>{const b=e.target.closest('button');if(b&&b.dataset.v!=V){const o=['m','w','d'];setV(b.dataset.v,o.indexOf(b.dataset.v)>o.indexOf(V)?'zi':'zo')}};
+let p0=0,sx=null,sy=0;const dist=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+main.addEventListener('touchstart',e=>{if(e.touches.length==2){p0=dist(e);sx=null}else{p0=0;sx=e.touches[0].clientX;sy=e.touches[0].clientY}},{passive:true});
+main.addEventListener('touchmove',e=>{if(e.touches.length==2&&p0){const r=dist(e)/p0;if(r>1.3){p0=0;zoom(1)}else if(r<.75){p0=0;zoom(-1)}}},{passive:true});
+main.addEventListener('touchend',e=>{
+  if(sx==null||e.touches.length)return;
+  const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+  sx=null;
+  if(V=='w' && Math.abs(dx)>Math.abs(dy)) return; // Στην Εβδομάδα επιτρέπουμε το native swipe καρουζέλ
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*2)nav(dx<0?1:-1);
+},{passive:true});
+document.addEventListener('gesturestart',e=>e.preventDefault());
+save();setV('w');
+</script>
 </body>
 </html>
