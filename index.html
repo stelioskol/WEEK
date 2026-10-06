@@ -6,17 +6,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Εβδομάδα</title>
     
-    <!-- Σύνδεση με εικονίδια και Manifest για εγκατάσταση -->
     <link rel="icon" href="icon.jpg?v=3">
     <link rel="apple-touch-icon" href="icon.jpg?v=3">
     <link rel="manifest" href="manifest.json">
     
     <style>
-        /* Γενική Εμφάνιση */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f6f1ff; margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; }
+        /* Η ΑΡΧΙΚΗ ΣΟΥ ΚΑΘΑΡΗ ΕΜΦΑΝΙΣΗ (Χωρίς χρωματιστά πλαίσια) */
+        body { font-family: sans-serif; background-color: #f6f1ff; margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; }
         h1 { text-align: center; color: #333; margin-top: 5px; font-size: 1.5em; }
         
-        /* Οριζόντιο Scroll (Κάρτες) */
         .week-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 20px; flex-grow: 1; align-items: stretch; }
         .day-card { background: white; border-radius: 15px; padding: 15px; min-width: 85vw; scroll-snap-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
         @media (min-width: 768px) { .day-card { min-width: 320px; } }
@@ -24,33 +22,20 @@
         .day-title { font-weight: bold; font-size: 1.2em; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 10px; text-align: center; color: #444; }
         .tasks-list { flex-grow: 1; overflow-y: auto; list-style: none; padding: 0; margin: 0; }
         
-        /* Στυλ Εργασιών */
-        .task-item { display: flex; align-items: center; background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 10px; margin-bottom: 8px; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); word-break: break-word;}
-        
-        /* ΣΤΥΛ ΓΙΑ ΤΙΣ ΕΠΑΝΑΛΑΜΒΑΝΟΜΕΝΕΣ ΕΡΓΑΣΙΕΣ */
-        .task-item.recurring { background-color: #e3f2fd; border-color: #bbdefb; }
-        .task-badge { display: block; font-size: 0.65em; background: #2196f3; color: white; padding: 2px 6px; border-radius: 10px; margin-bottom: 3px; width: max-content; }
-        
-        /* Ολοκληρωμένες εργασίες */
+        .task-item { display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 10px 0; word-break: break-word; }
         .task-item.done span.task-text-content { text-decoration: line-through; color: #888; }
-        .task-item.recurring.done { opacity: 0.7; }
         
-        .task-text { flex-grow: 1; font-size: 1em; display: flex; flex-direction: column; }
+        .task-text { flex-grow: 1; margin-left: 10px; font-size: 1em; }
         
-        /* Κουμπιά μέσα στην κάρτα */
         .btn-check, .btn-delete { background: none; border: none; font-size: 1.3em; cursor: pointer; padding: 5px; }
-        .btn-check { color: #4CAF50; }
-        .btn-delete { color: #f44336; }
         
-        /* Πεδίο εισαγωγής κειμένου και κουμπιά προσθήκης */
-        .input-area { display: flex; gap: 6px; margin-top: 15px; }
+        /* Απλό πεδίο προσθήκης με τα δύο κουμπιά */
+        .input-area { display: flex; gap: 5px; margin-top: 15px; }
         .input-area input { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1em; }
-        .btn-add { background: #4CAF50; color: white; border: none; border-radius: 8px; padding: 0 15px; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .btn-repeat { background: #2196f3; color: white; border: none; border-radius: 8px; padding: 0 12px; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .input-area button { background: none; border: 1px solid #ccc; border-radius: 8px; padding: 0 10px; font-size: 1.2em; cursor: pointer; background-color: #f9f9f9; }
         
-        /* Μενού πάνω */
         .nav-buttons { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .nav-buttons button { background: #fff; border: 1px solid #ccc; padding: 8px 15px; border-radius: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .nav-buttons button { background: #fff; border: 1px solid #ccc; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -62,19 +47,17 @@
     <h1 id="week-title">Εβδομάδα</h1>
     
     <div class="week-container" id="week-container">
-        <!-- Οι μέρες φορτώνονται από τη JavaScript -->
+        <!-- Κάρτες ημερών -->
     </div>
 
     <script>
-        // Φόρτωση του Service Worker (για λειτουργία χωρίς ίντερνετ)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW Error:', err));
         }
 
         const dayNames = ["Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"];
-        let currentOffset = 0; // Αλλαγή εβδομάδων
+        let currentOffset = 0; 
         
-        // Βάσεις δεδομένων
         let tasks = JSON.parse(localStorage.getItem('week_tasks')) || {};
         let recurring = JSON.parse(localStorage.getItem('week_recurring')) || { "Δευτέρα": [], "Τρίτη": [], "Τετάρτη": [], "Πέμπτη": [], "Παρασκευή": [], "Σάββατο": [], "Κυριακή": [] };
         let recurringDone = JSON.parse(localStorage.getItem('week_recurring_done')) || {};
@@ -111,32 +94,27 @@
                 dateObj.setDate(monday.getDate() + i);
                 let dateStr = formatDate(dateObj);
                 let dayName = dayNames[i];
-                let isToday = dateStr === formatDate(new Date());
 
                 let card = document.createElement('div');
                 card.className = 'day-card';
-                if(isToday) card.style.border = "3px solid #2196f3"; // Μπλε πλαίσιο στο Σήμερα
 
                 let html = `<div class="day-title">${dayName} <span style="font-size:0.8em; color:#888;">${formatDateGreek(dateObj)}</span></div>`;
                 html += `<ul class="tasks-list" id="list-${dateStr}">`;
 
-                // 1. Εμφάνιση Επαναλαμβανόμενων Εργασιών (Γαλάζιες)
+                // Επαναλαμβανόμενες εργασίες (με την ίδια ακριβώς απλή εμφάνιση)
                 if(recurring[dayName]) {
                     recurring[dayName].forEach((taskText, index) => {
                         let isDone = recurringDone[dateStr] && recurringDone[dateStr].includes(taskText);
                         html += `
-                        <li class="task-item recurring ${isDone ? 'done' : ''}">
+                        <li class="task-item ${isDone ? 'done' : ''}">
                             <button class="btn-check" onclick="toggleRecurring('${dateStr}', '${dayName}', ${index})">${isDone ? '✓' : '○'}</button>
-                            <span class="task-text">
-                                <span class="task-badge">Κάθε ${dayName}</span>
-                                <span class="task-text-content">${taskText}</span>
-                            </span>
+                            <span class="task-text"><span class="task-text-content"><b>(Κάθε ${dayName})</b> ${taskText}</span></span>
                             <button class="btn-delete" onclick="deleteRecurring('${dayName}', ${index})">×</button>
                         </li>`;
                     });
                 }
 
-                // 2. Εμφάνιση Απλών Ημερήσιων Εργασιών (Λευκές)
+                // Απλές εργασίες
                 if (tasks[dateStr]) {
                     tasks[dateStr].forEach((task, index) => {
                         html += `
@@ -152,8 +130,8 @@
                 html += `
                 <div class="input-area">
                     <input type="text" id="input-${dateStr}" placeholder="Γράψε εδώ..." onkeypress="if(event.key==='Enter') addTask('${dateStr}')">
-                    <button class="btn-add" onclick="addTask('${dateStr}')" title="Προσθήκη μόνο για σήμερα">+</button>
-                    <button class="btn-repeat" onclick="addRecurringTask('${dateStr}', '${dayName}')" title="Επανάληψη κάθε βδομάδα">🔁</button>
+                    <button onclick="addTask('${dateStr}')" title="Προσθήκη μόνο για σήμερα">+</button>
+                    <button onclick="addRecurringTask('${dateStr}', '${dayName}')" title="Επανάληψη κάθε βδομάδα">🔁</button>
                 </div>`;
 
                 card.innerHTML = html;
@@ -161,7 +139,6 @@
             }
         }
 
-        // Λειτουργίες Απλών Εργασιών
         function addTask(dateStr) {
             let input = document.getElementById(`input-${dateStr}`);
             if (!input.value.trim()) return;
@@ -184,7 +161,6 @@
             renderWeek();
         }
 
-        // Λειτουργίες Επαναλαμβανόμενων Εργασιών
         function addRecurringTask(dateStr, dayName) {
             let input = document.getElementById(`input-${dateStr}`);
             let val = input.value.trim();
@@ -209,14 +185,13 @@
         }
 
         function deleteRecurring(dayName, index) {
-            if(confirm(`Αυτή η εργασία θα διαγραφεί οριστικά από ΟΛΕΣ τις ${dayName}s. Είσαι σίγουρος;`)) {
+            if(confirm(`Διαγραφή από ΟΛΕΣ τις ${dayName}s;`)) {
                 recurring[dayName].splice(index, 1);
                 saveData();
                 renderWeek();
             }
         }
 
-        // Λειτουργίες Περιήγησης
         function changeWeek(direction) {
             currentOffset += direction;
             renderWeek();
@@ -233,7 +208,6 @@
             }, 100);
         }
 
-        // Φόρτωση με το άνοιγμα της σελίδας
         renderWeek();
         window.onload = () => { setTimeout(() => goToToday(), 200); };
     </script>
