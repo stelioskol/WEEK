@@ -198,5 +198,10 @@ main.addEventListener('touchend',e=>{
 document.addEventListener('gesturestart',e=>e.preventDefault());
 save();setV('w');
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
 </body>
 </html>
