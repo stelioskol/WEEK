@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="icon.png?v=5">
 <link rel="apple-touch-icon" href="icon.png?v=5">
 <link rel="manifest" href="manifest.json">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f6f1ff">
 <title>Εβδομάδα</title>
 <style>
 :root{--bg:#f6f1ff;--ink:#261c3d;--mute:#7d7399;--card:#fff;--line:#ece5f8;--shadow:0 10px 28px rgba(90,55,150,.16);--g1:hsl(285 95% 86% / .55);--g2:hsl(190 90% 82% / .45);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -29,25 +31,14 @@ h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.4px}
 .seg button{flex:1;border:0;background:none;color:var(--mute);font-size:14px;font-weight:700;padding:8px 0;border-radius:13px;transition:.2s}
 .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(80,50,140,.15)}
 #td{border:0;border-radius:16px;padding:0 14px;font-size:14px;font-weight:800;color:#fff;background:linear-gradient(140deg,#8b5cf6,#ec4899)}
-
-/* --- ΡΥΘΜΙΣΕΙΣ ΓΙΑ SCROLL & ΠΡΟΒΟΛΕΣ (ΚΑΡΟΥΖΕΛ) --- */
 #main{flex:1;min-height:0;overflow-y:auto;padding:6px 14px calc(24px + 0px);touch-action:pan-y;-webkit-overflow-scrolling:touch;position:relative}
-#main::-webkit-scrollbar { display: none; }
-#main { scrollbar-width: none; }
-
 #main.d{display:flex;flex-direction:column}
-.d .card{flex:1;margin:0;min-height:0}
-
-/* Οριζόντιο Scroll (Καρουζέλ) για την Εβδομάδα */
-#main.w{display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;gap:12px;padding:10px 14px 24px;touch-action:pan-x pan-y}
-.w .card{flex:0 0 88vw;scroll-snap-align:center;margin:0;max-height:100%;overflow-y:auto;box-shadow:0 10px 24px rgba(0,0,0,0.2)}
-/* ------------------------------------------------ */
-
 .zi{animation:zi .3s cubic-bezier(.3,1.2,.5,1)}
 .zo{animation:zo .3s cubic-bezier(.3,1.2,.5,1)}
 @keyframes zi{from{transform:scale(.9);opacity:0}}
 @keyframes zo{from{transform:scale(1.1);opacity:0}}
 .card{display:flex;flex-direction:column;background:var(--card);border-radius:26px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+.d .card{flex:1;margin:0;min-height:0}
 .card.today{outline:3px solid hsl(var(--h) 80% 65% / .55)}
 .hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:16px 18px 12px;color:#fff;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
 .hr{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
@@ -84,6 +75,21 @@ li.empty{display:block;border:0;text-align:center;color:var(--mute);padding:36px
 .add input:focus{border-color:hsl(var(--h) 80% 60%)}
 .plus{flex:none;width:46px;border:0;border-radius:16px;color:#fff;font-size:26px;font-weight:700;line-height:1;padding:0;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
 .plus:active{transform:scale(.9)}
+.wk{display:flex;flex-direction:column;gap:10px}
+.wr{display:flex;gap:10px;align-items:stretch;min-height:76px;padding:8px;background:var(--card);border-radius:20px;box-shadow:var(--shadow)}
+.wr.today{outline:3px solid hsl(var(--h) 80% 65% / .55)}
+.wd{flex:none;width:62px;border-radius:14px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;background:linear-gradient(140deg,hsl(var(--h) 78% 50%),hsl(calc(var(--h) + 35) 85% 58%))}
+.wd b{font-size:12px;font-weight:800;opacity:.92}
+.wd i{font-style:normal;font-size:25px;font-weight:800;line-height:1.1}
+.wd small{font-size:11px;font-weight:700}
+.wl{list-style:none;margin:0;padding:0;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.wr li{padding:4px 0;border:0;gap:8px}
+.wr .chk{width:22px;height:22px;border-width:2px}
+.wr .chk svg{width:12px;height:12px;stroke-width:4}
+.wr .em{font-size:16px}
+.wr .tx{font-size:14px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wr li.more{color:var(--mute);font-size:12px;font-weight:700;padding:1px 0 0 30px}
+.wr li.free{color:var(--mute);font-size:14px;font-weight:600}
 .mg{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .mg b{text-align:center;font-size:12px;color:var(--mute);padding:4px 0}
 .cell{border:0;border-radius:14px;background:var(--card);color:var(--ink);min-height:74px;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 2px 8px rgba(80,50,140,.1)}
@@ -128,19 +134,19 @@ const save=()=>{try{localStorage.setItem('week-cards-v2',JSON.stringify(S))}catc
 const main=document.getElementById('main');
 let V='w',cur=new Date(now),pop=null;
 const li=x=>`<li class="${x.d?'done':''}${x.id===pop?' pop':''}" data-id="${x.id}"><button class="chk" data-a="tg" aria-label="Έγινε"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="em">${x.e}</span><span class="tx">${esc(x.t)}</span><button class="ic" data-a="mv" aria-label="Αύριο">➜</button><button class="ic" data-a="rm" aria-label="Διαγραφή">✕</button></li>`;
-//function card(d,sm){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,p=a.length?Math.round(dn/a.length*100):0,w=WD[wd(d)];
-  //return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
 function card(d,sm){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,p=a.length?Math.round(dn/a.length*100):0,w=WD[wd(d)];
-  return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="rep" aria-label="Επανάληψη" style="background:var(--line);color:var(--mute);font-size:17px;width:38px;box-shadow:none;">🔁</button><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
+  return `<section class="card${sm?' sm':''}${k==K(now)?' today':''}" data-k="${k}" style="--h:${w.h}"><div class="hd" data-a="zoom"><div><h2>${w.n}</h2><small>${d.getDate()} ${MS[d.getMonth()]}${k==K(now)?' <b>ΣΗΜΕΡΑ</b>':''}</small></div><div class="hr">${dn?'<button class="clr" data-a="clr">🧹</button>':''}<span>${a.length?dn+'/'+a.length:''}</span><span class="big">${w.e}</span></div><div class="bar"><u style="width:${p}%"></u></div></div><ul class="list">${a.map(li).join('')||(sm?'':'<li class="empty">Άδεια μέρα…<br>Γράψε κάτι παρακάτω 👇</li>')}</ul><div class="add"><input enterkeyhint="done" maxlength="80" autocomplete="off" placeholder="${PH[wd(d)]}"><button class="plus" data-a="rep" aria-label="Επανάληψη κάθε εβδομάδα" style="background:var(--line);color:var(--mute);font-size:17px;width:40px">🔁</button><button class="plus" data-a="add" aria-label="Προσθήκη">+</button></div></section>`}
+const SH=['Δευ','Τρί','Τετ','Πέμ','Παρ','Σάβ','Κυρ'];
+function wrow(d){const k=K(d),a=S.t[k]||[],dn=a.filter(x=>x.d).length,w=WD[wd(d)];
+  return `<section class="wr${k==K(now)?' today':''}" data-k="${k}" data-a="zoom" style="--h:${w.h}"><div class="wd"><b>${SH[wd(d)]}</b><i>${d.getDate()}</i><small>${a.length?dn+'/'+a.length:w.e}</small></div><ul class="wl">${a.slice(0,4).map(x=>`<li class="${x.d?'done':''}${x.id===pop?' pop':''}" data-id="${x.id}"><button class="chk" data-a="tg" aria-label="Έγινε"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="em">${x.e}</span><span class="tx">${esc(x.t)}</span></li>`).join('')||'<li class="free">Ελεύθερη μέρα ✨ πάτα για να γράψεις</li>'}${a.length>4?`<li class="more">+${a.length-4} ακόμα</li>`:''}</ul></section>`}
 function month(){const f=new Date(cur.getFullYear(),cur.getMonth(),1),s=mon(f);let h='<div class="mg">'+WD.map(w=>`<b>${w.s}</b>`).join('');
   for(let i=0;i<42;i++){const d=addD(s,i);if(i>=35&&i%7==0&&d.getMonth()!=cur.getMonth())break;const k=K(d),a=S.t[k]||[];
     h+=`<button class="cell${d.getMonth()!=cur.getMonth()?' off':''}${k==K(now)?' now':''}" data-a="open" data-k="${k}" style="--h:${WD[wd(d)].h}"><i>${d.getDate()}</i><span>${a.slice(0,4).map(x=>`<em class="${x.d?'x':''}">${x.e}</em>`).join('')}</span>${a.length>4?'<u>+'+(a.length-4)+'</u>':''}</button>`}
   return h+'</div>'}
 function keys(){if(V=='d')return[K(cur)];if(V=='w'){const m=mon(cur);return[...Array(7)].map((_,i)=>K(addD(m,i)))}const n=new Date(cur.getFullYear(),cur.getMonth()+1,0).getDate();return[...Array(n)].map((_,i)=>K(new Date(cur.getFullYear(),cur.getMonth(),i+1)))}
 function render(sc,an){
-  const st = V=='w' ? main.scrollLeft : main.scrollTop;
-  let h;
-  if(V=='d')h=card(cur,false);else if(V=='w'){const m=mon(cur);h=[...Array(7)].map((_,i)=>card(addD(m,i),true)).join('')}else h=month();
+  const st=main.scrollTop;let h;
+  if(V=='d')h=card(cur,false);else if(V=='w'){const m=mon(cur);h='<div class="wk">'+[...Array(7)].map((_,i)=>wrow(addD(m,i))).join('')+'</div>'}else h=month();
   main.className=V+(an?' '+an:'');main.innerHTML=h;
   let tt,sub;
   if(V=='d'){tt=WD[wd(cur)].n;sub=`${cur.getDate()} ${MN[cur.getMonth()]} ${cur.getFullYear()}`}
@@ -151,55 +157,25 @@ function render(sc,an){
   document.getElementById('wf').style.width=(t?n/t*100:0)+'%';
   document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.v==V));
   pop=null;
-  if(sc=='cur'){
-      const c=main.querySelector(`.card[data-k="${K(cur)}"]`);
-      if(c){
-          if(V=='w') setTimeout(()=> main.scrollLeft = c.offsetLeft - 14, 10);
-          else main.scrollTop = c.offsetTop - 6;
-      }
-  } else {
-      if(V=='w') main.scrollLeft = sc===0?0:st;
-      else main.scrollTop = sc===0?0:st;
-  }
-}
+  if(sc=='cur'){main.scrollTop=0}else main.scrollTop=sc===0?0:st}
 function setV(v,an){V=v;render('cur',an||null)}
 function nav(n){if(V=='d')cur=addD(cur,n);else if(V=='w')cur=addD(cur,7*n);else{const d=new Date(cur.getFullYear(),cur.getMonth()+n,1);cur=d.getMonth()==now.getMonth()&&d.getFullYear()==now.getFullYear()?new Date(now):d}render(0)}
 function zoom(dir){const o=['m','w','d'],i=o.indexOf(V)+dir;if(i<0||i>2)return;setV(o[i],dir>0?'zi':'zo')}
 function burst(x,y,n){for(let k=0;k<n;k++){const s=document.createElement('span'),a=Math.random()*6.28,r=50+Math.random()*(n>8?170:80);s.className='cf';s.textContent=CF[Math.random()*CF.length|0];s.style.cssText=`left:${x}px;top:${y}px;--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r-40}px;--rt:${(Math.random()-.5)*540}deg`;document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
-//function add(k){const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
-//  const[e,t]=emo(v);(S.t[k]=S.t[k]||[]).push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t,e,d:false});
-  //save();render();const i=main.querySelector(`[data-k="${k}"] input`);if(i)i.focus()}
-function add(k, rep){
-  const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
-  const [e,t]=emo(v);
-  const weeks = rep ? 24 : 1;
-  const sharedId = Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-  for(let i=0; i<weeks; i++){
-    const tk = K(addD(parse(k), i*7));
-    (S.t[tk]=S.t[tk]||[]).push({id:sharedId,t,e,d:false});
-  }
-  save();render();const i_inp=main.querySelector(`[data-k="${k}"] input`);if(i_inp)i_inp.focus()}
+function add(k,rep){const inp=main.querySelector(`[data-k="${k}"] input`),v=inp.value.trim();if(!v)return;
+  const[e,t]=emo(v);const id=Date.now().toString(36)+Math.random().toString(36).slice(2,5);for(let j=0;j<(rep?24:1);j++){const tk=K(addD(parse(k),j*7));(S.t[tk]=S.t[tk]||[]).push({id,t,e,d:false})}
+  save();render();const i=main.querySelector(`[data-k="${k}"] input`);if(i)i.focus()}
 main.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
-  if(a=='open'){cur=parse(b.dataset.k);return setV('w','zi')}
-  const c=b.closest('.card'),k=c.dataset.k;
+  if(a=='open'){cur=parse(b.dataset.k);return setV('d','zi')}
+  const c=b.closest('[data-k]'),k=c.dataset.k;
   if(a=='zoom'){if(V=='w'){cur=parse(k);setV('d','zi')}return}
- // if(a=='add')return add(k);
-  if(a=='add')return add(k, false);
-  if(a=='rep')return add(k, true);
+  if(a=='add')return add(k,false);if(a=='rep')return add(k,true);
   const arr=S.t[k]=S.t[k]||[];
   if(a=='clr')S.t[k]=arr.filter(x=>!x.d);
   else{const id=b.closest('li').dataset.id,i=arr.findIndex(x=>x.id==id);
     if(a=='tg'){arr[i].d=!arr[i].d;if(arr[i].d){pop=id;const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,6);if(arr.every(x=>x.d))setTimeout(()=>burst(innerWidth/2,innerHeight/3,26),150)}}
-    //if(a=='rm')arr.splice(i,1);
-    if(a=='rm'){
-      let c=0; for(let d in S.t) c+=S.t[d].filter(x=>x.id==id).length;
-      if(c>1 && confirm("🔁 Αυτή είναι επαναλαμβανόμενη εργασία!\n\n[OK] Διαγραφή από ΟΛΕΣ τις εβδομάδες\n[ΑΚΥΡΩΣΗ] Διαγραφή ΜΟΝΟ από σήμερα")){
-        for(let d in S.t) S.t[d]=S.t[d].filter(x=>x.id!=id);
-      } else {
-        arr.splice(i,1);
-      }
-    }
+    if(a=='rm'){let n=0;for(const d in S.t)n+=S.t[d].filter(x=>x.id==id).length;if(n>1&&confirm("🔁 Αυτή είναι επαναλαμβανόμενη εργασία!\n\n[OK] Διαγραφή από ΟΛΕΣ τις εβδομάδες\n[ΑΚΥΡΩΣΗ] Διαγραφή ΜΟΝΟ από αυτή τη μέρα")){for(const d in S.t)S.t[d]=S.t[d].filter(x=>x.id!=id)}else arr.splice(i,1)}
     if(a=='mv'){const[x]=arr.splice(i,1);x.d=false;const n=K(addD(parse(k),1));(S.t[n]=S.t[n]||[]).push(x)}}
   save();render()});
 main.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.matches('input'))add(e.target.closest('.card').dataset.k)});
@@ -210,20 +186,10 @@ document.querySelector('.seg').onclick=e=>{const b=e.target.closest('button');if
 let p0=0,sx=null,sy=0;const dist=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
 main.addEventListener('touchstart',e=>{if(e.touches.length==2){p0=dist(e);sx=null}else{p0=0;sx=e.touches[0].clientX;sy=e.touches[0].clientY}},{passive:true});
 main.addEventListener('touchmove',e=>{if(e.touches.length==2&&p0){const r=dist(e)/p0;if(r>1.3){p0=0;zoom(1)}else if(r<.75){p0=0;zoom(-1)}}},{passive:true});
-main.addEventListener('touchend',e=>{
-  if(sx==null||e.touches.length)return;
-  const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-  sx=null;
-  if(V=='w' && Math.abs(dx)>Math.abs(dy)) return; // Στην Εβδομάδα επιτρέπουμε το native swipe καρουζέλ
-  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*2)nav(dx<0?1:-1);
-},{passive:true});
+main.addEventListener('touchend',e=>{if(sx==null||e.touches.length)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*2)nav(dx<0?1:-1)},{passive:true});
 document.addEventListener('gesturestart',e=>e.preventDefault());
 save();setV('w');
 </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js')</script>
 </body>
 </html>
